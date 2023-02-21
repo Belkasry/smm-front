@@ -65,8 +65,8 @@
               </h4>
 
               <div class="fs-6 text-gray-600 pe-7">
-                Login into Metronic Admin Dashboard to make sure the data
-                integrity is OK
+                Login into SMM Admin Dashboard to make sure the data integrity
+                is OK
               </div>
             </div>
             <!--end::Content-->

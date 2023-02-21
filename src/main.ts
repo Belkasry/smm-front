@@ -22,10 +22,30 @@ import * as components from "vuetify/components";
 import "@mdi/font/css/materialdesignicons.css";
 import { aliases, mdi } from "vuetify/iconsets/mdi";
 
+const myCustomLightTheme = {
+  dark: false,
+  colors: {
+    background: "#235153",
+    surface: "#235153",
+    primary: "#e9dc17",
+    "primary-darken-1": "#c0b510",
+    secondary: "#03DAC6",
+    "secondary-darken-1": "#018786",
+    error: "#B00020",
+    info: "#2196F3",
+    success: "#4CAF50",
+    warning: "#FB8C00",
+  },
+};
 const vuetify = createVuetify({
   components,
   directives,
-  theme: false,
+  theme: {
+    defaultTheme: "myCustomLightTheme",
+    themes: {
+      myCustomLightTheme,
+    },
+  },
   icons: {
     defaultSet: "mdi",
     aliases,

@@ -1228,7 +1228,7 @@
         <div class="d-flex flex-wrap align-items-center mb-8">
           <div id="kt_signin_email" :class="{ 'd-none': emailFormDisplay }">
             <div class="fs-4 fw-boldest mb-1">Email Address</div>
-            <div class="fs-6 fw-bold text-gray-600">support@keenthemes.com</div>
+            <div class="fs-6 fw-bold text-gray-600">support@disklosure.net</div>
           </div>
 
           <div
@@ -1258,7 +1258,7 @@
                       id="emailaddress"
                       placeholder="Email Address"
                       name="emailaddress"
-                      value="support@keenthemes.com"
+                      value="support@disklosure.com"
                     />
                     <div class="fv-plugins-message-container">
                       <div class="fv-help-block">
@@ -2309,9 +2309,9 @@ export default defineComponent({
       avatar: "media/avatars/300-1.jpg",
       name: "Max",
       surname: "Smith",
-      company: "Keenthemes",
+      company: "Disklosure",
       contactPhone: "044 3276 454 935",
-      companySite: "keenthemes.com",
+      companySite: "Disklosure.com",
       country: "MY",
       language: "msa",
       timezone: "Kuala Lumpur",

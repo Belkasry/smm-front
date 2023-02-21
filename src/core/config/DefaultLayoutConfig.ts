@@ -1,7 +1,7 @@
 import LayoutConfigTypes from "@/core/config/LayoutConfigTypes";
 
 const config: LayoutConfigTypes = {
-  themeName: "Metronic",
+  themeName: "SMM",
   themeVersion: "8.0.38",
   demo: "demo1",
   main: {

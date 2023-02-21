@@ -52,7 +52,7 @@
             <h2 class="fw-bolder mb-5">
               Support at
               <a href="https://devs.keenthemes.com" class=""
-                >devs.keenthemes.com</a
+                >devs.disklosure.net</a
               >
             </h2>
             <!--end::Heading-->

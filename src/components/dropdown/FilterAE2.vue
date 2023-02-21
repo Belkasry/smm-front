@@ -14,7 +14,8 @@
         <div class="text-blue-accent-2 fw-bold fs-6">
           <v-autocomplete
             label="Service"
-            v-model="service"
+            class="shrink-text"
+            v-model="filter_options.service"
             :items="listValRef.services"
             item-title="name"
             item-value="id"
@@ -33,7 +34,7 @@
         <div class="text-blue-accent-2 fw-bold fs-6">
           <v-autocomplete
             label="Activité"
-            v-model="activite"
+            v-model="filter_options.activite"
             :items="listValRef.activites"
             item-title="name"
             item-value="id"
@@ -50,7 +51,7 @@
         <div class="text-blue-accent-2 fw-bold fs-6">
           <v-autocomplete
             label="Aspect"
-            v-model="aspect"
+            v-model="filter_options.aspect"
             :items="listValRef.aspects"
             item-title="name"
             item-value="id"
@@ -65,7 +66,7 @@
         <div class="text-blue-accent-2 fw-bold fs-6">
           <v-autocomplete
             label="Impact"
-            v-model="impact"
+            v-model="filter_options.impact"
             :items="listValRef.impacts"
             item-title="name"
             item-value="id"
@@ -79,7 +80,7 @@
         <div class="text-blue-accent-2 fw-bold fs-6">
           <v-autocomplete
             label="Theme"
-            v-model="theme"
+            v-model="filter_options.theme"
             :items="listValRef.themes"
             item-title="name"
             item-value="id"
@@ -92,7 +93,7 @@
         <div class="text-blue-accent-2 fw-bold fs-6">
           <v-autocomplete
             label="Situation"
-            v-model="situation"
+            v-model="filter_options.situation"
             :items="listValRef.situations"
             item-title="name"
             item-value="id"
@@ -117,9 +118,9 @@
               class="form-check-input"
               type="checkbox"
               value="1"
-              v-model="data.author"
+              v-model="filter_options.s_ns"
             />
-            <span class="form-check-label user-select-none"> Author </span>
+            <span class="form-check-label user-select-none"> S_NS </span>
           </label>
           <!--end::Options-->
 
@@ -170,6 +171,7 @@
         </button>
 
         <button
+          @click="filter"
           type="submit"
           class="btn btn-sm btn-primary"
           data-kt-menu-dismiss="true"
@@ -185,7 +187,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import listValRef from "@/core/data/valeur-ref";
-import listAE from "@/core/data/ae";
+import axios from "axios";
 interface Filter {
   status: string;
   author: boolean;
@@ -195,17 +197,38 @@ interface Filter {
 
 export default defineComponent({
   name: "filterAE2",
+  props: {
+    data_filter: {
+      type: Array,
+    },
+  },
   data: () => ({
     listValRef: listValRef,
-    activite: null,
-    service: null,
-    aspect: null,
-    impact: null,
-    theme: null,
-    situation: null,
-    moyen_maitrise_humains: [],
+    filter_options: {
+      activite: null,
+      service: null,
+      aspect: null,
+      impact: null,
+      theme: null,
+      situation: null,
+      moyen_maitrise_humains: [],
+      s_ns: 0,
+    },
   }),
   components: {},
+  mounted() {
+    this.fetch();
+    this.$emit("update:data_filter", this.filter_options);
+  },
+  methods: {
+    filter() {
+      this.$emit("update:data_filter", this.filter_options);
+    },
+    async fetch() {
+      const responseValRef = await axios.get("http://smm.test/api/valeur-ref");
+      this.listValRef = responseValRef.data;
+    },
+  },
   setup() {
     const data = ref<Filter>({
       status: "1",
@@ -229,5 +252,8 @@ export default defineComponent({
 }
 .bg-smm-filter {
   background: #0bb7af54;
+}
+.v-autocomplete__selection {
+  font-size: small;
 }
 </style>

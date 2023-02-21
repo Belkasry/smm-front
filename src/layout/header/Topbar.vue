@@ -36,7 +36,6 @@
           <inline-svg src="media/icons/duotune/general/gen025.svg" />
         </span>
       </div>
-      <KTQuickLinksMenu></KTQuickLinksMenu>
       <!--end::Menu-->
     </div>
     <!--end::Quick links-->
@@ -60,25 +59,6 @@
       <!--end::Menu wrapper-->
     </div>
     <!--end::Chat-->
-
-    <!--begin::Notifications-->
-    <div class="d-flex align-items-center ms-1 ms-lg-3">
-      <!--begin::Menu-->
-      <div
-        class="btn btn-icon btn-active-light-primary position-relative w-30px h-30px w-md-40px h-md-40px"
-        data-kt-menu-trigger="click"
-        data-kt-menu-attach="parent"
-        data-kt-menu-placement="bottom-end"
-        data-kt-menu-flip="bottom"
-      >
-        <span class="svg-icon svg-icon-1">
-          <inline-svg src="media/icons/duotune/general/gen022.svg" />
-        </span>
-      </div>
-      <KTNotificationsMenu></KTNotificationsMenu>
-      <!--end::Menu-->
-    </div>
-    <!--end::Notifications-->
 
     <!--begin::User-->
     <div
@@ -130,8 +110,6 @@ export default defineComponent({
   name: "header-topbar",
   components: {
     KTSearch,
-    KTNotificationsMenu,
-    KTQuickLinksMenu,
     KTUserMenu,
   },
 });

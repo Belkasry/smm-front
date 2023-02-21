@@ -81,7 +81,7 @@
         <!--begin::Col-->
         <div class="col-lg-8">
           <a href="#" class="fw-bold fs-6 text-dark text-hover-primary"
-            >keenthemes.com</a
+            >Disklosure.com</a
           >
         </div>
         <!--end::Col-->

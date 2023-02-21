@@ -1,441 +1,430 @@
 <template>
-  <div class="bg-theme-smm">
-    <v-card>
-      <v-card-title class="d-flex justify-content-between">
-        <div>
-          <!--begin::Search-->
-          <div class="d-flex align-items-center position-relative mt-2">
-            <span class="svg-icon svg-icon-1 position-absolute ms-6">
-              <inline-svg src="media/icons/duotune/general/gen021.svg" />
-            </span>
-            <input
-              type="text"
-              v-model="search"
-              class="form-control form-control-solid w-250px ps-15"
-              placeholder="Search"
-            />
-          </div>
-          <!--end::Search-->
+  <v-card class="bg-transparent p-2 px-3 card-data-table">
+    <v-card-title class="d-flex justify-content-between">
+      <div>
+        <!--begin::Search-->
+        <div class="d-flex align-items-center position-relative mt-2">
+          <span class="svg-icon svg-icon-1 position-absolute ms-6">
+            <inline-svg src="media/icons/duotune/general/gen021.svg" />
+          </span>
+          <input
+            type="text"
+            v-model="search"
+            class="form-control form-control-solid w-250px ps-15"
+            placeholder="Search"
+          />
         </div>
-        <div
-          class="d-flex justify-content-end"
-          data-kt-subscription-table-toolbar="base"
-        >
-          <FilterAE></FilterAE>
+        <!--end::Search-->
+      </div>
+      <div
+        class="d-flex justify-content-end"
+        data-kt-subscription-table-toolbar="base"
+      >
+        <FilterAE></FilterAE>
 
-          <div class="d-flex my-4">
-            <a
-              href="#"
-              class="btn btn-sm btn-light me-2"
-              id="kt_user_follow_button"
-            >
-              <span class="svg-icon svg-icon-2">
-                <inline-svg src="media/icons/duotune/arrows/arr078.svg" />
-              </span>
-              Export
-            </a>
-
-            <a
-              href="#"
-              class="btn btn-sm btn-primary btn-hover-secondary text-hover-dark me-3"
-              data-bs-toggle="modal"
-              data-bs-target="#kt_modal_offer_a_deal"
-            >
-              <span class="svg-icon svg-icon-2">
-                <inline-svg src="media/icons/duotune/arrows/arr075.svg" />
-              </span>
-              Ajouter une AE</a
-            >
-
-            <!--begin::Menu-->
-            <div class="me-0">
-              <button
-                class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary"
-                data-kt-menu-trigger="click"
-                data-kt-menu-placement="bottom-end"
-                data-kt-menu-flip="top-end"
-              >
-                <i class="bi bi-three-dots fs-3"></i>
-              </button>
-              <Dropdown3></Dropdown3>
-            </div>
-            <!--end::Menu-->
-          </div>
-        </div>
-      </v-card-title>
-      <div class="card-body pt-0 row">
-        <v-card class="p-2 col-xl-9">
-          <v-data-table
-            show-select
-            @mousedown="mouseDownHandler"
-            v-model:page="page"
-            id="element"
-            :items="dataAE"
-            :search="search"
-            :items-per-page="itemsPerPage"
-            :headers="headerAE"
-            class="primary table"
-            hide-default-footer
-            dense
-            item-key="id"
-            height="60vh"
-            row-height="4vh"
+        <div class="d-flex my-4">
+          <v-btn @click="toggleColumn" class="me-2">Filter</v-btn>
+          <a
+            href="#"
+            class="btn btn-sm btn-light me-2"
+            id="kt_user_follow_button"
           >
-            <template v-slot:[`item.id`]="{ item }">
-              <p class="text-white text-hover-primary fw-bolder fs-8">
-                AE- {{ item.columns.id }}
-              </p>
-            </template>
-            <template v-slot:[`item.service`]="{ item }">
-              <p class="text-white ttext-hover-primary fw-bolder fs-8">
-                {{ item.columns.service }}
-              </p>
-            </template>
-            <template v-slot:[`item.activite`]="{ item }">
-              <p class="text-white text-hover-primary fw-bolder fs-8">
-                {{ item.columns.activite }}
-              </p>
-            </template>
-            <template v-slot:[`item.aspect`]="{ item }">
-              <p class="text-white text-hover-primary fw-bolder fs-8">
-                {{ item.columns.aspect }}
-              </p>
-            </template>
-            <template v-slot:[`item.impact`]="{ item }">
-              <p class="text-white text-hover-primary fw-bolder fs-8">
-                {{ item.columns.impact }}
-              </p>
-            </template>
-            <template v-slot:[`item.theme`]="{ item }">
-              <h2 class="badge fw-bold py-2 px-4 badge-light medium-text">
-                {{ item.columns.theme }}
-              </h2>
-            </template>
-            <template v-slot:[`item.situation`]="{ item }">
-              <h2
-                :class="`badge-${
-                  item.columns.situation == 'U'
-                    ? 'danger'
-                    : item.columns.situation == 'D'
-                    ? 'warning'
-                    : 'light'
-                }`"
-                class="medium-text badge fw-bold py-2 px-4"
-              >
-                {{ item.columns.situation }}
-              </h2>
-            </template>
-            <template v-slot:[`item.frequence`]="{ item }">
-              <v-tooltip :text="`${item.columns.frequence}`">
-                <template v-slot:activator="{ props }">
-                  <h2
-                    class="badge fw-bold py-2 px-4 badge-light medium-text"
-                    v-bind="props"
-                  >
-                    {{ item.raw.frequence.value }}
-                  </h2>
-                </template>
-              </v-tooltip>
-            </template>
-            <template v-slot:[`item.niveau_maitrise`]="{ item }">
-              <v-tooltip :text="`${item.columns.niveau_maitrise}`">
-                <template v-slot:activator="{ props }">
-                  <h2
-                    class="badge fw-bold py-2 px-4 badge-light medium-text"
-                    v-bind="props"
-                  >
-                    {{ item.raw.niveau_maitrise.niveau }}
-                  </h2>
-                </template>
-              </v-tooltip>
-            </template>
-            <template v-slot:[`item.gravite_etendu`]="{ item }">
-              <v-tooltip :text="`${item.columns.gravite_etendu}`">
-                <template v-slot:activator="{ props }">
-                  <h2
-                    class="badge fw-bold py-2 px-4 badge-light medium-text"
-                    v-bind="props"
-                  >
-                    {{ item.raw.gravite_etendu.value }}
-                  </h2>
-                </template>
-              </v-tooltip>
-            </template>
-            <template v-slot:[`item.gravite_dangerosite`]="{ item }">
-              <v-tooltip :text="`${item.columns.gravite_dangerosite}`">
-                <template v-slot:activator="{ props }">
-                  <h2
-                    class="badge fw-bold py-2 px-4 badge-light medium-text"
-                    v-bind="props"
-                  >
-                    {{ item.raw.gravite_dangerosite.value }}
-                  </h2>
-                </template>
-              </v-tooltip>
-            </template>
-            <template v-slot:[`item.gravite_persistance`]="{ item }">
-              <v-tooltip :text="`${item.columns.gravite_persistance}`">
-                <template v-slot:activator="{ props }">
-                  <h2
-                    class="badge fw-bold py-2 px-4 badge-light medium-text"
-                    v-bind="props"
-                  >
-                    {{ item.raw.gravite_persistance.value }}
-                  </h2>
-                </template>
-              </v-tooltip>
-            </template>
+            <span class="svg-icon svg-icon-2">
+              <inline-svg src="media/icons/duotune/arrows/arr078.svg" />
+            </span>
+            Export
+          </a>
 
-            <template v-slot:[`item.moyen_maitrise_humains`]="{ item }">
-              <div
-                @click="changeWidth($event)"
-                class="my-2 small-cell"
-                v-if="
-                  item.columns.moyen_maitrise_humains &&
-                  item.columns.moyen_maitrise_humains.length > 0
-                "
-              >
-                <template
-                  v-for="(e, index) in item.columns.moyen_maitrise_humains"
-                  :key="index"
-                >
-                  <div
-                    :class="{
-                      'mb-2':
-                        item.columns.moyen_maitrise_humains.length - 1 !==
-                        index,
-                    }"
-                    class="d-flex align-items-center"
-                  >
-                    <!--begin::Bullet-->
-                    <span
-                      class="bullet bullet-vertical h-15px"
-                      :class="`bg-light`"
-                    ></span>
-                    <!--end::Bullet-->
+          <a
+            href="#"
+            class="btn btn-sm btn-primary btn-hover-secondary text-hover-dark me-3"
+            data-bs-toggle="modal"
+            data-bs-target="#kt_modal_offer_a_deal"
+          >
+            <span class="svg-icon svg-icon-2">
+              <inline-svg src="media/icons/duotune/arrows/arr075.svg" />
+            </span>
+            Ajouter une AE</a
+          >
 
-                    <!--begin::Description-->
-                    <div class="flex-grow-1 ml-2">
-                      <span class="fw-bold d-block">{{ e.name }}</span>
-                    </div>
-                  </div>
-                </template>
-              </div>
-            </template>
-            <template v-slot:[`item.moyen_maitrise_techniques`]="{ item }">
-              <div
-                @click="changeWidth($event)"
-                class="my-2 small-cell"
-                v-if="
-                  item.columns.moyen_maitrise_techniques &&
-                  item.columns.moyen_maitrise_techniques.length > 0
-                "
-              >
-                <template
-                  v-for="(e, index) in item.columns.moyen_maitrise_techniques"
-                  :key="index"
-                >
-                  <div
-                    :class="{
-                      'mb-2':
-                        item.columns.moyen_maitrise_techniques.length - 1 !==
-                        index,
-                    }"
-                    class="d-flex align-items-center"
-                  >
-                    <!--begin::Bullet-->
-                    <span
-                      class="bullet bullet-vertical h-15px"
-                      :class="`bg-light`"
-                    ></span>
-                    <!--end::Bullet-->
-
-                    <!--begin::Description-->
-                    <div class="flex-grow-1 ml-2">
-                      <span class="fw-bold d-block">{{ e.name }}</span>
-                    </div>
-                  </div>
-                </template>
-              </div>
-            </template>
-            <template v-slot:[`item.moyen_maitrise_organisations`]="{ item }">
-              <div
-                @click="changeWidth($event)"
-                class="my-2 small-cell"
-                v-if="
-                  item.columns.moyen_maitrise_organisations &&
-                  item.columns.moyen_maitrise_organisations.length > 0
-                "
-              >
-                <template
-                  v-for="(e, index) in item.columns
-                    .moyen_maitrise_organisations"
-                  :key="index"
-                >
-                  <div
-                    :class="{
-                      'mb-2':
-                        item.columns.moyen_maitrise_organisations.length - 1 !==
-                        index,
-                    }"
-                    class="d-flex align-items-center"
-                  >
-                    <!--begin::Bullet-->
-                    <span
-                      class="bullet bullet-vertical h-15px"
-                      :class="`bg-light`"
-                    ></span>
-                    <!--end::Bullet-->
-
-                    <!--begin::Description-->
-                    <div class="flex-grow-1 ml-2">
-                      <span class="fw-bold d-block">{{ e.name }}</span>
-                    </div>
-                  </div>
-                </template>
-              </div>
-            </template>
-            <template v-slot:[`item.plan_actions`]="{ item }">
-              <div
-                @click="changeWidth($event)"
-                class="my-2 small-cell"
-                v-if="
-                  item.columns.plan_actions &&
-                  item.columns.plan_actions.length > 0
-                "
-              >
-                <template
-                  v-for="(e, index) in item.columns.plan_actions"
-                  :key="index"
-                >
-                  <div
-                    :class="{
-                      'mb-2': item.columns.plan_actions.length - 1 !== index,
-                    }"
-                    class="d-flex align-items-center"
-                  >
-                    <!--begin::Bullet-->
-                    <span
-                      class="bullet bullet-vertical h-15px"
-                      :class="`bg-light`"
-                    ></span>
-                    <!--end::Bullet-->
-
-                    <!--begin::Description-->
-                    <div class="flex-grow-1 ml-2">
-                      <span class="text-muted fw-bold d-block">{{
-                        e.name
-                      }}</span>
-                    </div>
-                  </div>
-                </template>
-              </div>
-            </template>
-            <template v-slot:[`item.F_G`]="{ item }">
-              <h2
-                class="badge fw-bolder py-2 px-4 badge-light h3"
-                v-bind="props"
-              >
-                {{
-                  item.columns.frequence *
-                  (item.columns.gravite_dangerosite +
-                    item.columns.gravite_persistance +
-                    item.columns.gravite_etendu)
-                }}
-              </h2>
-            </template>
-            <template v-slot:[`item.s_ns`]="{ item }">
-              <h2
-                :class="`badge-light-${
-                  item.columns.s_ns ? 'success' : 'danger'
-                }`"
-                class="medium-text badge fw-bold py-2 px-4"
-              >
-                {{ item.columns.s_ns ? "S" : "NS" }}
-              </h2>
-            </template>
-            <template v-slot:[`item.actions`]>
-              <div class="dropdown dropdown-inline dropdown-sm">
-                <a
-                  href="#"
-                  class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
-                >
-                  <span class="svg-icon svg-icon-3">
-                    <inline-svg src="media/icons/duotune/general/gen019.svg" />
-                  </span>
-                </a>
-
-                <a
-                  href="#"
-                  class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
-                >
-                  <span class="svg-icon svg-icon-3">
-                    <inline-svg src="media/icons/duotune/art/art005.svg" />
-                  </span>
-                </a>
-
-                <a
-                  href="#"
-                  class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm"
-                >
-                  <span class="svg-icon svg-icon-3">
-                    <inline-svg src="media/icons/duotune/general/gen027.svg" />
-                  </span>
-                </a>
-              </div>
-            </template>
-            <template v-slot:[`item.progress`]>
-              <div class="d-flex flex-column w-100 me-2">
-                <div class="d-flex flex-stack mb-2">
-                  <span class="text-muted me-2 fs-7 fw-bold"> {{ 60 }}% </span>
-                </div>
-
-                <div class="progress h-6px w-100">
-                  <div
-                    class="progress-bar"
-                    :class="`bg-warning`"
-                    role="progressbar"
-                    :style="{ width: 60 + '%' }"
-                    :aria-valuenow="60"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                  ></div>
-                </div>
-              </div>
-            </template>
-          </v-data-table>
-          <ul class="pagination">
-            <li class="page-item previous" @click="previousPage">
-              <a href="#" class="page-link bg-green-accent-1"
-                ><i class="previous"></i
-              ></a>
-            </li>
-            <li
-              class="page-item"
-              v-for="pageNumber in pageCount"
-              :key="pageNumber"
-              :class="{ active: page === pageNumber }"
+          <!--begin::Menu-->
+          <div class="me-0">
+            <button
+              class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary"
+              data-kt-menu-trigger="click"
+              data-kt-menu-placement="bottom-end"
+              data-kt-menu-flip="top-end"
             >
-              <a
-                href="#"
-                class="page-link"
-                @click.prevent="setpage(pageNumber)"
-                >{{ pageNumber }}</a
-              >
-            </li>
-            <li class="page-item next" @click="nextPage">
-              <a href="#" class="page-link bg-green-accent-1"
-                ><i class="next"></i
-              ></a>
-            </li>
-          </ul>
-        </v-card>
-        <div class="col-xl-3 pl-2">
-          <FilterAE2 />
+              <i class="bi bi-three-dots fs-3"></i>
+            </button>
+            <Dropdown3></Dropdown3>
+          </div>
+          <!--end::Menu-->
         </div>
       </div>
-    </v-card>
-  </div>
+    </v-card-title>
+    <div class="card-body pt-0 row">
+      <v-card
+        :class="{
+          'p-2': isExpanded,
+          'col-xl-12': !isExpanded,
+          'col-xl-9': isExpanded,
+        }"
+      >
+        <v-data-table
+          :theme="false"
+          show-select
+          @mousedown="mouseDownHandler"
+          v-model:page="page"
+          id="element"
+          :items="dataAE"
+          :search="search"
+          :items-per-page="itemsPerPage"
+          :headers="headerAE"
+          class="primary table"
+          hide-default-footer
+          dense
+          item-key="id"
+          row-height="4vh"
+        >
+          <template v-slot:[`item.id`]="{ item }">
+            <p class="text-white text-hover-primary fw-bolder fs-8">
+              AE- {{ item.columns.id }}
+            </p>
+          </template>
+          <template v-slot:[`item.service`]="{ item }">
+            <p class="text-white ttext-hover-primary fw-bolder fs-8">
+              {{ item.columns.service }}
+            </p>
+          </template>
+          <template v-slot:[`item.activite`]="{ item }">
+            <p class="text-white text-hover-primary fw-bolder fs-8">
+              {{ item.columns.activite }}
+            </p>
+          </template>
+          <template v-slot:[`item.aspect`]="{ item }">
+            <p class="text-white text-hover-primary fw-bolder fs-8">
+              {{ item.columns.aspect }}
+            </p>
+          </template>
+          <template v-slot:[`item.impact`]="{ item }">
+            <p class="text-white text-hover-primary fw-bolder fs-8">
+              {{ item.columns.impact }}
+            </p>
+          </template>
+          <template v-slot:[`item.theme`]="{ item }">
+            <h2 class="badge fw-bold py-2 px-4 badge-light medium-text">
+              {{ item.columns.theme }}
+            </h2>
+          </template>
+          <template v-slot:[`item.situation`]="{ item }">
+            <h2
+              :class="`badge-${
+                item.columns.situation == 'U'
+                  ? 'danger'
+                  : item.columns.situation == 'D'
+                  ? 'warning'
+                  : 'light'
+              }`"
+              class="medium-text badge fw-bold py-2 px-4"
+            >
+              {{ item.columns.situation }}
+            </h2>
+          </template>
+          <template v-slot:[`item.frequence`]="{ item }">
+            <v-tooltip :text="`${item.columns.frequence}`">
+              <template v-slot:activator="{ props }">
+                <h2
+                  class="badge fw-bold py-2 px-4 badge-light medium-text"
+                  v-bind="props"
+                >
+                  {{ item.raw.frequence.value }}
+                </h2>
+              </template>
+            </v-tooltip>
+          </template>
+          <template v-slot:[`item.niveau_maitrise`]="{ item }">
+            <v-tooltip :text="`${item.columns.niveau_maitrise}`">
+              <template v-slot:activator="{ props }">
+                <h2
+                  class="badge fw-bold py-2 px-4 badge-light medium-text"
+                  v-bind="props"
+                >
+                  {{ item.raw.niveau_maitrise.niveau }}
+                </h2>
+              </template>
+            </v-tooltip>
+          </template>
+          <template v-slot:[`item.gravite_etendu`]="{ item }">
+            <v-tooltip :text="`${item.columns.gravite_etendu}`">
+              <template v-slot:activator="{ props }">
+                <h2
+                  class="badge fw-bold py-2 px-4 badge-light medium-text"
+                  v-bind="props"
+                >
+                  {{ item.raw.gravite_etendu.value }}
+                </h2>
+              </template>
+            </v-tooltip>
+          </template>
+          <template v-slot:[`item.gravite_dangerosite`]="{ item }">
+            <v-tooltip :text="`${item.columns.gravite_dangerosite}`">
+              <template v-slot:activator="{ props }">
+                <h2
+                  class="badge fw-bold py-2 px-4 badge-light medium-text"
+                  v-bind="props"
+                >
+                  {{ item.raw.gravite_dangerosite.value }}
+                </h2>
+              </template>
+            </v-tooltip>
+          </template>
+          <template v-slot:[`item.gravite_persistance`]="{ item }">
+            <v-tooltip :text="`${item.columns.gravite_persistance}`">
+              <template v-slot:activator="{ props }">
+                <h2
+                  class="badge fw-bold py-2 px-4 badge-light medium-text"
+                  v-bind="props"
+                >
+                  {{ item.raw.gravite_persistance.value }}
+                </h2>
+              </template>
+            </v-tooltip>
+          </template>
+
+          <template v-slot:[`item.moyen_maitrise_humains`]="{ item }">
+            <div
+              @click="changeWidth($event)"
+              class="my-2 small-cell"
+              v-if="
+                item.columns.moyen_maitrise_humains &&
+                item.columns.moyen_maitrise_humains.length > 0
+              "
+            >
+              <template
+                v-for="(e, index) in item.columns.moyen_maitrise_humains"
+                :key="index"
+              >
+                <div
+                  :class="{
+                    'mb-2':
+                      item.columns.moyen_maitrise_humains.length - 1 !== index,
+                  }"
+                  class="d-flex align-items-center"
+                >
+                  <!--begin::Bullet-->
+                  <span
+                    class="bullet bullet-vertical h-15px"
+                    :class="`bg-light`"
+                  ></span>
+                  <!--end::Bullet-->
+
+                  <!--begin::Description-->
+                  <div class="flex-grow-1 ml-2">
+                    <span class="fw-bold d-block">{{ e.name }}</span>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </template>
+          <template v-slot:[`item.moyen_maitrise_techniques`]="{ item }">
+            <div
+              @click="changeWidth($event)"
+              class="my-2 small-cell"
+              v-if="
+                item.columns.moyen_maitrise_techniques &&
+                item.columns.moyen_maitrise_techniques.length > 0
+              "
+            >
+              <template
+                v-for="(e, index) in item.columns.moyen_maitrise_techniques"
+                :key="index"
+              >
+                <div
+                  :class="{
+                    'mb-2':
+                      item.columns.moyen_maitrise_techniques.length - 1 !==
+                      index,
+                  }"
+                  class="d-flex align-items-center"
+                >
+                  <!--begin::Bullet-->
+                  <span
+                    class="bullet bullet-vertical h-15px"
+                    :class="`bg-light`"
+                  ></span>
+                  <!--end::Bullet-->
+
+                  <!--begin::Description-->
+                  <div class="flex-grow-1 ml-2">
+                    <span class="fw-bold d-block">{{ e.name }}</span>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </template>
+          <template v-slot:[`item.moyen_maitrise_organisations`]="{ item }">
+            <div
+              @click="changeWidth($event)"
+              class="my-2 small-cell"
+              v-if="
+                item.columns.moyen_maitrise_organisations &&
+                item.columns.moyen_maitrise_organisations.length > 0
+              "
+            >
+              <template
+                v-for="(e, index) in item.columns.moyen_maitrise_organisations"
+                :key="index"
+              >
+                <div
+                  :class="{
+                    'mb-2':
+                      item.columns.moyen_maitrise_organisations.length - 1 !==
+                      index,
+                  }"
+                  class="d-flex align-items-center"
+                >
+                  <!--begin::Bullet-->
+                  <span
+                    class="bullet bullet-vertical h-15px"
+                    :class="`bg-light`"
+                  ></span>
+                  <!--end::Bullet-->
+
+                  <!--begin::Description-->
+                  <div class="flex-grow-1 ml-2">
+                    <span class="fw-bold d-block">{{ e.name }}</span>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </template>
+          <template v-slot:[`item.plan_actions`]="{ item }">
+            <div
+              @click="changeWidth($event)"
+              class="my-2 small-cell"
+              v-if="
+                item.columns.plan_actions &&
+                item.columns.plan_actions.length > 0
+              "
+            >
+              <template
+                v-for="(e, index) in item.columns.plan_actions"
+                :key="index"
+              >
+                <div
+                  :class="{
+                    'mb-2': item.columns.plan_actions.length - 1 !== index,
+                  }"
+                  class="d-flex align-items-center"
+                >
+                  <!--begin::Bullet-->
+                  <span
+                    class="bullet bullet-vertical h-15px"
+                    :class="`bg-light`"
+                  ></span>
+                  <!--end::Bullet-->
+
+                  <!--begin::Description-->
+                  <div class="flex-grow-1 ml-2">
+                    <span class="text-muted fw-bold d-block">{{ e.name }}</span>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </template>
+          <template v-slot:[`item.F_G`]="{ item }">
+            <h2 class="badge fw-bolder py-2 px-4 badge-light h3" v-bind="props">
+              {{
+                item.columns.frequence.value *
+                (item.columns.gravite_dangerosite.value +
+                  item.columns.gravite_persistance.value +
+                  item.columns.gravite_etendu.value)
+              }}
+            </h2>
+          </template>
+          <template v-slot:[`item.s_ns`]="{ item }">
+            <h2
+              :class="`badge-light-${item.columns.s_ns ? 'success' : 'danger'}`"
+              class="medium-text badge fw-bold py-2 px-4"
+            >
+              {{ item.columns.s_ns ? "S" : "NS" }}
+            </h2>
+          </template>
+          <template v-slot:[`item.actions`]>
+            <div class="dropdown dropdown-inline dropdown-sm">
+              <a
+                href="#"
+                class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+              >
+                <span class="svg-icon svg-icon-3">
+                  <inline-svg src="media/icons/duotune/general/gen019.svg" />
+                </span>
+              </a>
+
+              <a
+                href="#"
+                class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+              >
+                <span class="svg-icon svg-icon-3">
+                  <inline-svg src="media/icons/duotune/art/art005.svg" />
+                </span>
+              </a>
+
+              <a
+                href="#"
+                class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm"
+              >
+                <span class="svg-icon svg-icon-3">
+                  <inline-svg src="media/icons/duotune/general/gen027.svg" />
+                </span>
+              </a>
+            </div>
+          </template>
+          <template v-slot:[`item.progress`]>
+            <div class="d-flex flex-column w-100 me-2">
+              <div class="d-flex flex-stack mb-2">
+                <span class="text-muted me-2 fs-7 fw-bold"> {{ 60 }}% </span>
+              </div>
+
+              <div class="progress h-6px w-100">
+                <div
+                  class="progress-bar"
+                  :class="`bg-warning`"
+                  role="progressbar"
+                  :style="{ width: 60 + '%' }"
+                  :aria-valuenow="60"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                ></div>
+              </div>
+            </div>
+          </template>
+        </v-data-table>
+        <ul class="pagination sticky-bottom">
+          <li class="page-item previous" @click="previousPage">
+            <a class="page-link bg-green-accent-1"><i class="previous"></i></a>
+          </li>
+          <li
+            class="page-item"
+            v-for="pageNumber in pageCount"
+            :key="pageNumber"
+            :class="{ active: page === pageNumber }"
+          >
+            <a class="page-link" @click.prevent="setpage(pageNumber)">{{
+              pageNumber
+            }}</a>
+          </li>
+          <li class="page-item next" @click="nextPage">
+            <a class="page-link bg-green-accent-1"><i class="next"></i></a>
+          </li>
+        </ul>
+      </v-card>
+      <div v-if="isExpanded" class="p-2 col-xl-3">
+        <FilterAE2 v-model:data_filter="data_filter" />
+      </div>
+    </div>
+  </v-card>
 </template>
 
 <script lang="ts">
@@ -447,11 +436,14 @@ import { IAE } from "@/core/data/ae";
 import { ICustomer } from "@/core/data/customers";
 import FilterAE from "@/components/dropdown/FilterAE.vue";
 import FilterAE2 from "@/components/dropdown/FilterAE2.vue";
+import axios from "axios";
 
 export default defineComponent({
   name: "analyse-env-list",
   components: { VDataTable, FilterAE, FilterAE2 },
   data: () => ({
+    isExpanded: true,
+    data_filter: {},
     singleSelect: false,
     selected: [],
     search: "",
@@ -459,13 +451,14 @@ export default defineComponent({
       pageCount: 1,
     },
     page: 1,
-    itemsPerPage: 5,
+    itemsPerPage: 10,
     headerAE: [
       {
         title: "ID",
         key: "id",
         sortable: true,
         class: "px-0",
+        width: 100,
       },
       {
         title: "Service",
@@ -610,7 +603,23 @@ export default defineComponent({
       },
     ],
     dataAE: listAE,
+    initialData: listAE,
   }),
+  watch: {
+    data_filter: {
+      handler(val) {
+        console.log(val.service);
+        this.dataAE = this.initialData.filter(
+          (item) =>
+            (!val.service || item.service.id === val.service) &&
+            (!val.activite || item.activite.id === val.activite) &&
+            (!val.impact || item.impact.id === val.impact) &&
+            (!val.aspect || item.aspect.id === val.aspect)
+        );
+      },
+      deep: true,
+    },
+  },
   computed: {
     // compute the total number of pages based on the number of items and items per page
     pageCount() {
@@ -633,7 +642,18 @@ export default defineComponent({
       ]);
     });
   },
+  mounted() {
+    this.fetch();
+  },
   methods: {
+    async fetch() {
+      const responseValRef = await axios.get("http://smm.test/api/analyse");
+      this.dataAE = responseValRef.data;
+      this.initialData = responseValRef.data;
+    },
+    toggleColumn() {
+      this.isExpanded = !this.isExpanded;
+    },
     setpage(pageNumber) {
       this.page = pageNumber;
     },
@@ -707,24 +727,24 @@ table {
   border-collapse: collapse;
 }
 th {
-  border-bottom: 1px solid #364043;
-  color: #e2b842;
-  font-size: 0.85em;
-  font-weight: 600;
-  text-align: left;
+  border-bottom: 1px solid #364043 !important;
+  color: #e2b842 !important;
+  font-size: 0.85em !important;
+  font-weight: 600 !important;
+  text-align: left !important;
 }
 td {
-  color: #fff;
-  font-weight: 400;
+  color: #fff !important;
+  font-weight: 400 !important;
 }
 .disabled td {
   color: #4f5f64;
 }
 tbody tr {
-  transition: background 0.25s ease;
+  transition: background 0.25s ease !important;
 }
 tbody tr:hover {
-  background: #014055;
+  background: #014055 !important;
 }
 
 .el-pagination.is-background .btn-next,
@@ -758,8 +778,6 @@ div.dataTables_wrapper div.dataTables_processing {
   color: white;
 }
 .v-data-table {
-  background: #012b39e3;
-  min-height: 60vh;
   color: white;
   font-size: 0.75rem;
 }
@@ -780,5 +798,9 @@ div.dataTables_wrapper div.dataTables_processing {
 .table-wrapper {
   cursor: grab;
   overflow: auto;
+}
+.card-data-table {
+  margin-right: -14px !important;
+  margin-left: -14px !important;
 }
 </style>

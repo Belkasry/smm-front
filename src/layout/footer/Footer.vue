@@ -16,7 +16,7 @@
           href="https://keenthemes.com/"
           target="_blank"
           class="text-gray-800 text-hover-primary"
-          >Keenthemes</a
+          >Disklosure</a
         >
       </div>
       <!--end::Copyright-->

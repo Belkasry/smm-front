@@ -23,7 +23,7 @@
         <!--begin::Title-->
         <div class="d-flex flex-column">
           <a href="#" class="fs-6 text-gray-800 text-hover-primary fw-bold"
-            >BoomApp by Keenthemes</a
+            >BoomApp by Disklosure</a
           >
           <span class="fs-7 text-muted fw-bold">#45789</span>
         </div>
